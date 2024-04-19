@@ -15,7 +15,7 @@ class CreateAlbumsTable extends Migration
     {
         Schema::create('albums', function (Blueprint $table) {
             $table->BigIncrements('albumId');
-            $table->string('album_name');
+            $table->string('album_name')->unique();
             $table->text('description');
             $table->date('date_created');
             $table->UnsignedBigInteger('userId');

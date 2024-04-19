@@ -22,8 +22,9 @@
               <th>Deskripsi Foto</th>
               <th>Tanggal Unggah</th>
               <th>Lokasi File</th>
-              <th>Album Id</th>
-              <th>User Id</th>
+              <th>Album </th>
+              <th>User </th>
+              <th>Aksi</th>
             </tr>
             @foreach ($photo as $photo)
             <tr>
@@ -33,7 +34,17 @@
               <td>{{$photo->upload_date}}</td>
               <td>{{$photo->file_location}}</td>
               <td>{{$photo->albumId}}</td>
-              <td>{{$photo->userId}}</td>
+              <td>{{$photo->user->full_name}}</td>
+              <td>
+                <a href="/dashboard/photo-data/{{ $photo->photoId }}/edit" class="badge bg-warning"><i class="fas ion-edit"></i></a>
+
+                <form action="/dashboard/photo-data/{{ $photo->photoId }}" method="POST" class="d-inline">
+                  @method('delete')
+                  @csrf
+                  <button class="badge bg-danger border-0" onclick="return confirm('Yakin akan dihapus??')"><i class="fas ion-trash-a"></i></button>
+                </form>
+
+              </td>
             </tr>
             @endforeach
           </table>

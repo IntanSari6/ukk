@@ -12,7 +12,7 @@ class Photo extends Model
     protected $table = 'photos';
     protected $primaryKey = 'photoId';
 
-    protected $fillable = ['photo_title', 'photo_description', 'upload_date', 'file_location', 'albumId', 'userId'];
+    protected $fillable = ['photo_title', 'photo_description', 'upload_date', 'file_location', 'albumId', 'userId', 'likes'];
 
     public function user(){
         return $this->belongsTo(User::class, 'userId');

@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PhotoDataController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\PhotoCommentsController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,19 +41,26 @@ require __DIR__.'/auth.php';
 // });
 
 Route::get('/', [GalleryController::class, 'index']);
+Route::get('/gallery', [GalleryController::class, 'gallery']);
+Route::get('/like/{id}', [PhotoCommentController::class, 'like']);
 
-Route::get('/gallery', function () {
-    return view('initial-view.gallery');
-});
-Route::get('/category', function () {
-    return view('initial-view.category');
-});
+
+// Route::get('/gallery', function () {
+//     return view('initial-view.gallery');
+// });
+
+Route::get('/initial-view/detail-photo/{photoId}/like', [LikeController::class, 'like']);
+
+Route::post('/comments', [PhotoCommentsController::class, 'store'])->name('comments.store');
+
+
 Route::group(['middleware' => 'prevent-back-history'],function(){
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware('auth');
 
     Route::get('/photo-data', [PhotoDataController::class, 'index'])->middleware('auth');
 
     Route::get('/profile', [DashboardController::class, 'profile'])->middleware('auth');
+    Route::get('/initial-view/detail-photo/{photoId}', [photoDataController::class, 'show']);
 
     Route::resource('/dashboard/photo-data', PhotoDataController::class)->middleware('auth');
 

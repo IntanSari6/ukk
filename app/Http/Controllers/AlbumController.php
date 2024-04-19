@@ -18,8 +18,8 @@ class AlbumController extends Controller
      */
     public function index()
     {
+    $album = Album::where('userId', '=', Auth::user()->userId)->get();
         $user = User::all();
-        $album = Album::all();
         return view('dashboard.album.index', ['album' => $album]);
     }
 
@@ -30,32 +30,33 @@ class AlbumController extends Controller
 
 
     public function store(Request $request)
-    {
-        // dd($request);
-        $message = [
-            'required' => 'Silahkan isi kolom ini!'
-        ];
-        $validatedData = $request->validate([
-            'album_name' => 'required|max:255', 
-            'description' => 'required|max:255', 
-        ],$message
-        
-    );
-    $tanggal = Carbon::now()->toDateTimeString();
-        
-        // insert data ke database
-        $album = new Album;
-        $album->album_name = $validatedData['album_name'];
-        $album->description = $validatedData['description'];
-        if(Auth::check()){
-        $album->userId = $validatedData['userId'] = auth()->user()->userId;
-        }
-        $album->date_created = $tanggal;
-        $album->save();
-        
+{
+    $message = [
+        'required' => 'Silahkan isi kolom ini!',
+        'unique' => 'Nama album telah digunakan'
+    ];
 
-        return redirect('/dashboard/album')->with('success', 'Kategori baru telah ditambahkan!');
+    $validatedData = $request->validate([
+        'album_name' => 'unique:albums|required|max:255', 
+        'description' => 'required|max:255', 
+    ], $message);
+
+    $tanggal = Carbon::now()->toDateTimeString();
+
+    // insert data ke database
+    $album = new Album;
+    $album->album_name = $validatedData['album_name'];
+    $album->description = $validatedData['description'];
+
+    if (Auth::check()) {
+        $album->userId = auth()->user()->userId;
     }
+
+    $album->date_created = $tanggal;
+    $album->save();
+
+    return redirect('/dashboard/album')->with('success', 'Album baru telah ditambahkan!');
+}
 
     public function show($id)
     {
@@ -68,21 +69,41 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $albumId)
     {
-        //
+            $album = Album::where('albumId', $albumId)->first();
+        
+            // Periksa jika album ditemukan
+            if (!$album) {
+                abort(404); // Tampilkan halaman 404 jika album tidak ditemukan
+            }
+        
+            return view('/dashboard.album.edit', compact(['album']));
+        
     }
 
     /**
      * Update the specified resource in storage.
-     *
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $albumId)
     {
-        //
+        $tanggal = Carbon::now()->toDateTimeString();
+        $album = Album::where('albumId', $albumId)->first();
+        $album->album_name = $request->album_name;
+        $album->description = $request->description;
+        
+        if (Auth::check()) {
+            $album->userId = auth()->user()->userId;
+        }
+        
+        // Tidak perlu memperbarui tanggal pembuatan
+        $album->save();
+        
+        return redirect('/dashboard/album')->with('success', 'Album telah diperbarui!');
     }
 
     /**
@@ -91,8 +112,9 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($albumId)
     {
-        //
+        Album::destroy($albumId);
+        return redirect('/dashboard/album')->with('success','Data Berhasil Dihapus');
     }
 }

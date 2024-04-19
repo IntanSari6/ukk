@@ -14,10 +14,12 @@
   <link rel="stylesheet" href="{{ asset('dist/assets/modules/summernote/summernote-bs4.css')}}">
   <link rel="stylesheet" href="{{ asset('dist/assets/modules/owlcarousel2/dist/assets/owl.carousel.min.css')}}">
   <link rel="stylesheet" href="{{ asset('dist/assets/modules/owlcarousel2/dist/assets/owl.theme.default.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('dist/assets/modules/ionicons/css/ionicons.min.css')}}">
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset('dist/assets/css/style.css')}}">
   <link rel="stylesheet" href="{{ asset('dist/assets/css/components.css')}}">
 <!-- Start GA -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

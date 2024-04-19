@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Photo;
 use App\Models\Album;
+use App\Models\Like;
+use Illuminate\Support\Facades\Auth;
 
 class PhotoDataController extends Controller
 {
@@ -17,9 +19,12 @@ class PhotoDataController extends Controller
      */
     public function index()
     {
+        $photo = Photo::join('albums', 'albums.albumId', '=', 'photos.albumId')
+                   ->where('photos.userId', '=', Auth::user()->userId)
+                   ->get();
+                //    dd($photo);
         $user = User::all();
         $album = Album::all();
-        $photo = Photo::all();
         return view('dashboard.photo-data.index', ['photo' => $photo]);
     }
 
@@ -87,8 +92,9 @@ class PhotoDataController extends Controller
      */
     public function show(String $id)
     {
-        $photo = PhotoData::whereId($id)->first();
-        return view('show', compact(['photo']));
+        $photo = Photo::where('photoId',$id)->first();
+        $like = Like::where('photoId', $id)->count();
+        return view('initial-view.detail-photo', compact(['photo', 'like']));
     }
 
     /**
@@ -97,9 +103,18 @@ class PhotoDataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $photoId)
     {
-        //
+        $photo = Photo::where('photoId', $photoId)->first();
+        $user = User::all();
+        $album = Album::get();
+        
+        // Periksa jika photo ditemukan
+        if (!$photo) {
+            abort(404); // Tampilkan halaman 404 jika photo tidak ditemukan
+        }
+    
+        return view('/dashboard.photo-data.edit', compact(['photo','album', 'user']));
     }
 
     /**
@@ -109,10 +124,39 @@ class PhotoDataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, int $photoId)
+{
+    // Ambil tanggal saat ini
+    $tanggal = Carbon::now()->toDateTimeString();
+    
+    // Temukan foto berdasarkan photoId
+    $photo = Photo::where('photoId', $photoId)->first();
+    
+    // Perbarui atribut foto dengan data dari request
+    $photo->photo_title = $request->photo_title;
+    $photo->photo_description = $request->photo_description;
+    $photo->albumId = $request->albumId;
+    
+    // Periksa jika file_location ada dalam request
+    if ($request->hasFile('file_location')) {
+        $file = $request->file('file_location');
+        $path = storage_path('app/public');
+        $file_name = 'public/' . date('Ymd') . '-' . $file->getClientOriginalName();
+        $file->storeAs('public', $file_name);
+        $photo->file_location = $file_name;
     }
+
+    // Tidak perlu memperbarui tanggal pembuatan
+    // Perbarui atribut 'userId' dengan ID pengguna yang sedang masuk
+    $photo->userId = auth()->user()->userId;
+
+    // Simpan perubahan pada foto
+    $photo->save();
+
+    // Redirect ke halaman foto-data dengan pesan sukses
+    return redirect('/dashboard/photo-data')->with('success', 'Photo telah diperbarui!');
+}
+
 
     /**
      * Remove the specified resource from storage.
@@ -120,8 +164,13 @@ class PhotoDataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($photoId)
     {
-        //
+        Photo::destroy($photoId);
+        return redirect('/dashboard/photo-data')->with('success','Data Berhasil Dihapus');
     }
+    
+    
+
+
 }
