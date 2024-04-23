@@ -10,32 +10,19 @@
         <h1 class="mb-4">Our Scoop And Skoops Gallery</h1>
       </div>
       <div class="row">
-        @foreach ($album as $albums)
-        <div class="col-12 col-md-2 text-center mb-2">
-          <ul class="list-inline mb-4" id="portfolio-flters">
-            <li class="btn btn-outline-primary m-1" data-filter=".first">
-              {{$albums->album_name}}
-            </li>
-          </ul>
+        <div class="col-12 text-center mb-2">
+            <ul class="list-inline mb-4" id="portfolio-flters">
+                @foreach ($album as $albumItem) 
+                <a href="/initial-view/{{ $albumItem->albumId }}/detail"><li class="btn btn-primary btn-oval m-1 album" data-album-id="/category/{{$albumItem->albumId}}">
+                    <h4>{{$albumItem->album_name}}</h4>
+                </li></a>
+                    
+                @endforeach
+            </ul>
         </div>
-        @endforeach
-      </div>
-      
-      <div class="row portfolio-container">
-        <div class="col-lg-4 col-md-6 mb-4 portfolio-item first">
-          <div class="position-relative overflow-hidden mb-2">
-            <img class="img-fluid w-100" src="" alt="" />
-            <div
-              class="portfolio-btn bg-primary d-flex align-items-center justify-content-center"
-            >
-              <a href="assets/img/makanan1.jpeg" data-lightbox="portfolio">
-                <i class="fa fa-plus text-white" style="font-size: 60px"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-       
-      </div>
+    </div>
+
+
     </div>
   </div>
 @endsection

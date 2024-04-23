@@ -24,11 +24,35 @@
         id="navbarCollapse"
       >
         <div class="navbar-nav font-weight-bold mx-auto py-0">
-          <a href="/" class="nav-item nav-link {{Request::is('/') ? 'active' : ''}} ">Photo</a>
+          <a href="/" class="nav-item nav-link {{Request::is('/*') ? 'active' : ''}} ">Photo</a>
           <a href="gallery" class="nav-item nav-link {{Request::is('gallery') ? 'active' : ''}}">Album</a>
-          <a href="login" class="nav-item nav-link {{Request::is('login') ? 'active' : ''}}">Login</a>
         </div>
 
+        <div class="navbar-nav font-weight-bold mx-auto py-0">
+          @auth
+          <div class="nav-item dropdown">
+            <a
+              href="#"
+              class="nav-link dropdown-toggle"
+              data-toggle="dropdown"
+              >Welcome back, {{ auth()->user()->username }}</a
+            >
+            <div class="dropdown-menu rounded-0 m-0">
+              <a href="/dashboard" class="dropdown-item">My dashboard</a>
+              <form action="/logout" method="post">
+                @csrf
+              <button class="bg-white border-0"><a class="dropdown-item">
+                  <i class="bi bi-box-arrow-right"></i>Logout
+                </a></button>  
+              </form>
+            </div>
+          </div>
+        @else
+          <li class="nav-item">
+            <a href="login" class="nav-link {{ Request::is('login') ? 'active' : '' }}">Login</a>
+          </li>
+        @endauth
+        
     </nav>
   </div>
 

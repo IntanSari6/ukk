@@ -18,7 +18,7 @@
             </p>
             <p class="mr-3"><i class="fa fa-comments text-primary"></i> 15</p>
 
-            <small class="mr-3 like-icon"><a href="/initial-view/detail-photo/{{$photo->photoId}}/like"><i class="far fa-heart text-primary">{{$like}}</i></a></small>
+            <small class="mr-3 like-icon"><a href="/initial-view/detail-photo/{{$photo->photoId}}/like"><i class="fa fa-heart text-primary">{{$like}}</i></a></small>
 
           </div>
         </div>
@@ -31,11 +31,11 @@
 
         <!-- Comment List -->
         <div class="mb-5">
-          <h2 class="mb-4">3 Comments</h2>
+          <h2 class="mb-4"> Comments</h2>
           <div class="media mb-4">
             <div class="media-body">
               <h6>
-                John Doe <small><i>01 Jan 2045 at 12:00pm</i></small>
+                {{$comment->user->full_name}} <small><i>01 Jan 2045 at 12:00pm</i></small>
               </h6>
               <p>
                 Diam amet duo labore stet elitr ea clita ipsum, tempor labore

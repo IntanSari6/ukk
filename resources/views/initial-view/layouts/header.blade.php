@@ -21,10 +21,7 @@
            Registration
            @endif
            </h3>
-          <div class="d-inline-flex text-white">
-            <p class="m-0"><a class="text-white" href="">Beranda</a></p>
-
-          </div>
+         
         </div>
       </div>
     </div>

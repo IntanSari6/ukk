@@ -42,7 +42,8 @@ require __DIR__.'/auth.php';
 
 Route::get('/', [GalleryController::class, 'index']);
 Route::get('/gallery', [GalleryController::class, 'gallery']);
-Route::get('/like/{id}', [PhotoCommentController::class, 'like']);
+Route::get('/initial-view/{id}/detail', [GalleryController::class, 'detail_album']);
+Route::post('/initial-view/detail-photo/{id}',  [PhotoCommentsController::class, 'store']);
 
 
 // Route::get('/gallery', function () {
@@ -51,7 +52,7 @@ Route::get('/like/{id}', [PhotoCommentController::class, 'like']);
 
 Route::get('/initial-view/detail-photo/{photoId}/like', [LikeController::class, 'like']);
 
-Route::post('/comments', [PhotoCommentsController::class, 'store'])->name('comments.store');
+
 
 
 Route::group(['middleware' => 'prevent-back-history'],function(){
