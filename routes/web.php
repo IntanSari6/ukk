@@ -63,6 +63,7 @@ Route::group(['middleware' => 'prevent-back-history'],function(){
     Route::get('/profile', [DashboardController::class, 'profile'])->middleware('auth');
     Route::get('/initial-view/detail-photo/{photoId}', [photoDataController::class, 'show']); //detail photo
     Route::post('/initial-view/detail-photo/{id}', [PhotoCommentsController::class, 'storeComment']);
+    Route::delete('/comments/{commentId}', [PhotoCommentsController::class, 'deleteComment'])->name('comments.delete');
 
 
     Route::resource('/dashboard/photo-data', PhotoDataController::class)->middleware('auth');

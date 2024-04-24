@@ -33,6 +33,25 @@ class PhotoCommentsController extends Controller
         return redirect()->back()->with('error', 'Silakan login terlebih dahulu untuk menambahkan komentar');
     }
 }
+
+// public function deleteComment($commentId)
+// {
+//     $comment = PhotoComment::find($commentId);
+
+//     if(!$comment) {
+//         // Komentar tidak ditemukan
+//         return redirect()->back()->with('error', 'Komentar tidak ditemukan');
+//     }
+
+//     // Pastikan pengguna yang menghapus adalah pemilik komentar atau memiliki hak akses yang sesuai
+//     if(Auth::id() == $comment->userId) {
+//         $comment->delete();
+//         return redirect()->back()->with('success', 'Komentar berhasil dihapus');
+//     } else {
+//         // Tidak diizinkan menghapus komentar
+//         return redirect()->back()->with('error', 'Anda tidak diizinkan menghapus komentar ini');
+//     }
+// }
     
 
 }
