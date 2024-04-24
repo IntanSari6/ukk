@@ -43,7 +43,7 @@ require __DIR__.'/auth.php';
 Route::get('/', [GalleryController::class, 'index']);
 Route::get('/gallery', [GalleryController::class, 'gallery']);
 Route::get('/initial-view/{id}/detail', [GalleryController::class, 'detail_album']);
-Route::post('/initial-view/detail-photo/{id}',  [PhotoCommentsController::class, 'store']);
+// Route::post('/initial-view/detail-photo/{id}',  [PhotoCommentsController::class, 'store']);
 
 
 // Route::get('/gallery', function () {
@@ -61,7 +61,9 @@ Route::group(['middleware' => 'prevent-back-history'],function(){
     Route::get('/photo-data', [PhotoDataController::class, 'index'])->middleware('auth');
 
     Route::get('/profile', [DashboardController::class, 'profile'])->middleware('auth');
-    Route::get('/initial-view/detail-photo/{photoId}', [photoDataController::class, 'show']);
+    Route::get('/initial-view/detail-photo/{photoId}', [photoDataController::class, 'show']); //detail photo
+    Route::post('/initial-view/detail-photo/{id}', [PhotoCommentsController::class, 'storeComment']);
+
 
     Route::resource('/dashboard/photo-data', PhotoDataController::class)->middleware('auth');
 

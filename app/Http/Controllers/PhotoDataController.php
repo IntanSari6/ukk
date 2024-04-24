@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Photo;
 use App\Models\Album;
 use App\Models\Like;
+use App\Models\PhotoComment;
 use Illuminate\Support\Facades\Auth;
 
 class PhotoDataController extends Controller
@@ -94,7 +95,9 @@ class PhotoDataController extends Controller
     {
         $photo = Photo::where('photoId',$id)->first();
         $like = Like::where('photoId', $id)->count();
-        return view('initial-view.detail-photo', compact(['photo', 'like']));
+        $photoId = $id;
+        $comment = PhotoComment::where('photoId', $id)->get();
+        return view('initial-view.detail-photo', compact(['photo', 'like', 'photoId', 'comment']));
     }
 
     /**

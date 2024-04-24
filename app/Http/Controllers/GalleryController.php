@@ -10,19 +10,29 @@ use Illuminate\Http\Request;
 
 class GalleryController extends Controller
 {
-    public function index(){
-        $photo = Photo::join('albums', 'albums.albumId', '=', 'photos.albumId')->get();
+    public function index()
+    {
+        $photo = Photo::leftJoin('albums', 'albums.albumId', '=', 'photos.albumId')
+                    ->withCount('comments')
+                    ->select('photos.*', 'albums.album_name')
+                    ->get();
+
         return view('initial-view.home', compact('photo'));
     }
+
+    
     public function gallery(){
         $album = Album::all();
         return view('initial-view.gallery', compact('album'));
     }
-    public function detail(){
-        $like = Like::all();
-        $comment = PhotoComment::all();
-        return view('initial-view.detail-photo', compact('like', 'comment'));
+    public function detail()
+    {
+        $jumlahKomentar = PhotoComment::where('photoId', $photoId)->count();
+        $likes= Like::get();
+        $comment = PhotoComment::get();
+        return view('initial-view.detail-photo', compact('like', 'comment', 'jumlahKomentar'));
     }
+
     public function detail_album($id)
     {
     $photos = Photo::join('albums', 'albums.albumId', '=', 'photos.albumId')
